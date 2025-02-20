@@ -5,8 +5,9 @@ import com.example.userServiceTaskManagement.Repository.UserDetailRepository;
 import com.example.userServiceTaskManagement.Service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UserDetailServiceImpl implements UserDetailService {
 
     @Autowired
