@@ -1,17 +1,18 @@
 package com.example.userServiceTaskManagement.API;
 
 
+import com.example.userServiceTaskManagement.DTO.UserDetailsRegistrationDTO;
 import com.example.userServiceTaskManagement.Entity.UserDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "user/api/v1")
 public interface UserDetailAPI {
 
-    @PostMapping(value = "/register/User")
-    public ResponseEntity<UserDetail> registerUser(@RequestBody  UserDetail userDetail);
+    @PostMapping(value = "/register/user")
+    public ResponseEntity<UserDetailsRegistrationDTO> registerUser(@RequestBody  UserDetail userDetail);
+
+    @GetMapping(value = "/login/user")
+    public ResponseEntity<String> logInUser(@RequestBody UserDetail userDetail);
 
 }
