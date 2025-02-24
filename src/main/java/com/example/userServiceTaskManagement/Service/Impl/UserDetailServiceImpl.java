@@ -5,6 +5,10 @@ import com.example.userServiceTaskManagement.Entity.UserDetail;
 import com.example.userServiceTaskManagement.Repository.UserDetailRepository;
 import com.example.userServiceTaskManagement.Service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -15,16 +19,24 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Autowired
     private UserDetailRepository userDetailRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
+
     @Override
     public UserDetailsRegistrationDTO registerUser(UserDetail userDetail){
         UserDetailsRegistrationDTO userDetailsRegistrationDTO = new UserDetailsRegistrationDTO();
         UserDetail userDetails = userDetailRepository.findByUserMailId(userDetail.getUserMailId());
         if(!Objects.isNull(userDetails)){
             userDetailsRegistrationDTO.setMessage("Already registered user");
-            userDetail.setUserId(userDetails.getUserId());
-            userDetailsRegistrationDTO.setUserDetail(userDetail);
         }
         else{
+            userDetail.setPassword(bCryptPasswordEncoder.encode(userDetail.getPassword()));
             userDetailRepository.save(userDetail);
             userDetailsRegistrationDTO.setMessage("user registered");
         }
@@ -32,10 +44,9 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     public String logInUser(UserDetail userDetail){
-        UserDetail userDetail1 = userDetailRepository.findByUserMailId(userDetail.getUserMailId());
-        System.out.println("="+userDetail1.getUserMailId());
-        if(!Objects.isNull(userDetail1))
-                return "success";
+        Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetail.getUserMailId(),userDetail.getPassword()));
+        if(authenticate.isAuthenticated())
+                return jwtService.generateToken(userDetail);
         return "User not found, please register";
     }
 
