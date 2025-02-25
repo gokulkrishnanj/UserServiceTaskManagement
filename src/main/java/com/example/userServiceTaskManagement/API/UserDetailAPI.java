@@ -1,6 +1,7 @@
 package com.example.userServiceTaskManagement.API;
 
 
+import com.example.userServiceTaskManagement.DTO.LogInDetailsDTO;
 import com.example.userServiceTaskManagement.DTO.UserDetailsRegistrationDTO;
 import com.example.userServiceTaskManagement.Entity.UserDetail;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,10 @@ public interface UserDetailAPI {
     public ResponseEntity<UserDetailsRegistrationDTO> registerUser(@RequestBody  UserDetail userDetail);
 
     @GetMapping(value = "/login/user")
-    public ResponseEntity<String> logInUser(@RequestBody UserDetail userDetail);
+    public ResponseEntity<LogInDetailsDTO> logInUser(@RequestBody UserDetail userDetail);
+
+    @GetMapping(value = "/refresh")
+    public ResponseEntity<LogInDetailsDTO> refreshNewToken(@RequestParam String refreshToken);
+
 
 }

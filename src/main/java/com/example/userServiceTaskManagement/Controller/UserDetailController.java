@@ -1,6 +1,7 @@
 package com.example.userServiceTaskManagement.Controller;
 
 import com.example.userServiceTaskManagement.API.UserDetailAPI;
+import com.example.userServiceTaskManagement.DTO.LogInDetailsDTO;
 import com.example.userServiceTaskManagement.DTO.UserDetailsRegistrationDTO;
 import com.example.userServiceTaskManagement.Entity.UserDetail;
 import com.example.userServiceTaskManagement.Service.UserDetailService;
@@ -20,7 +21,11 @@ public class UserDetailController implements UserDetailAPI {
         return new ResponseEntity<>(userDetailService.registerUser(userDetail), HttpStatus.OK);
     }
 
-    public ResponseEntity<String> logInUser(UserDetail userDetail){
+    public ResponseEntity<LogInDetailsDTO> logInUser(UserDetail userDetail){
         return new ResponseEntity<>(userDetailService.logInUser(userDetail),HttpStatus.OK);
+    }
+
+    public ResponseEntity<LogInDetailsDTO> refreshNewToken(String refreshToken ){
+        return new ResponseEntity<>(userDetailService.refreshNewToken(refreshToken),HttpStatus.OK);
     }
 }

@@ -36,7 +36,7 @@ public class HttpSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        List<String> whiteListAPIs = List.of("/**/register/**","/**/login/**", "/**/Login/**", "**/Register/**");
+        List<String> whiteListAPIs = List.of("/**/register/**","/**/login/**", "/**/Login/**", "**/Register/**", "**/refresh?**");
 
         httpSecurity
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {whiteListAPIs.forEach(api-> authorizationManagerRequestMatcherRegistry.requestMatchers(new AntPathRequestMatcher(api)).permitAll());
