@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,7 +35,7 @@ public class HttpSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        List<String> whiteListAPIs = List.of("/**/register/**","/**/login/**", "/**/Login/**", "**/Register/**", "**/refresh?**");
+        List<String> whiteListAPIs = List.of("/**/register/**","/**/login/**", "/**/Login/**", "**/Register/**", "/**/refresh**");
 
         httpSecurity
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {whiteListAPIs.forEach(api-> authorizationManagerRequestMatcherRegistry.requestMatchers(new AntPathRequestMatcher(api)).permitAll());
@@ -47,6 +46,7 @@ public class HttpSecurityConfig {
         return httpSecurity.build();
     }
 
+    // loading from inmemory
     public UserDetailsService userDetailsService() throws Exception{
         UserDetails user = User
                 .withUsername("user")

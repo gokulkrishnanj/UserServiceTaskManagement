@@ -67,9 +67,10 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     public LogInDetailsDTO refreshNewToken(String refreshToken){
         LogInDetailsDTO logInDetailsDTO = new LogInDetailsDTO();
-        String userName = jwtService.extractUserNameFromToken(refreshToken.trim());
+        System.out.println("refToken:"+refreshToken);
+        String userName = jwtService.extractUserNameFromToken(refreshToken.substring(7).trim());
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-        boolean isExpired = jwtService.isTokenValid(refreshToken.trim(),userDetails);
+        boolean isExpired = jwtService.isTokenValid(refreshToken.substring(7).trim(),userDetails);
         if(isExpired){
             String accessToken = jwtService.generateToken(userDetails.getUsername());
             logInDetailsDTO.setRefreshToken(refreshToken);
