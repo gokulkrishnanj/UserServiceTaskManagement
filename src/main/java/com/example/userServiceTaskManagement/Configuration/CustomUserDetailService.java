@@ -25,6 +25,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if(Objects.isNull(username)){
             throw new UsernameNotFoundException("User is not registered, Please register to continue");
         }
+        System.out.println("role while loading:"+userDetail.getRole());
         return new CustomUserDetail(userDetail);
     }
 }

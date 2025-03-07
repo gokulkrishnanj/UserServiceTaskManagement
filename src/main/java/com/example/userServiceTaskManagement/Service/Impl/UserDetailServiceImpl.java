@@ -53,8 +53,9 @@ public class UserDetailServiceImpl implements UserDetailService {
         LogInDetailsDTO logInDetailsDTO = new LogInDetailsDTO();
         Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetail.getUserMailId(),userDetail.getPassword()));
         if(authenticate.isAuthenticated()){
-            String accessToken = jwtService.generateToken(userDetail.getUserMailId());
-            String refreshToken = jwtService.generateRefreshToken(userDetail.getUserMailId());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userDetail.getUserMailId());
+            String accessToken = "Bearer "+jwtService.generateToken(userDetails);
+            String refreshToken = "Bearer "+jwtService.generateRefreshToken(userDetails);
             logInDetailsDTO.setAccessToken(accessToken);
             logInDetailsDTO.setRefreshToken(refreshToken);
             logInDetailsDTO.setMessage("Login Successful");
@@ -72,8 +73,8 @@ public class UserDetailServiceImpl implements UserDetailService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         boolean isExpired = jwtService.isTokenValid(refreshToken.substring(7).trim(),userDetails);
         if(isExpired){
-            String accessToken = jwtService.generateToken(userDetails.getUsername());
-            logInDetailsDTO.setRefreshToken(refreshToken);
+            String accessToken = "Bearer "+jwtService.generateToken(userDetails);
+            logInDetailsDTO.setRefreshToken("Bearer "+refreshToken);
             logInDetailsDTO.setAccessToken(accessToken);
             logInDetailsDTO.setMessage("new token generated");
             return logInDetailsDTO;

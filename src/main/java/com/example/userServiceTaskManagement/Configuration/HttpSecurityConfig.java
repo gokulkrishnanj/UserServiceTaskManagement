@@ -39,7 +39,7 @@ public class HttpSecurityConfig {
 
         httpSecurity
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {whiteListAPIs.forEach(api-> authorizationManagerRequestMatcherRegistry.requestMatchers(new AntPathRequestMatcher(api)).permitAll());
-                authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();})
+                authorizationManagerRequestMatcherRegistry.requestMatchers(request -> request.getRequestURI().contains("/student")).hasRole("STUDENT").requestMatchers(request -> request.getRequestURI().contains("teacher")).hasRole("TEACHER").anyRequest().authenticated();})
                 .httpBasic(Customizer.withDefaults())
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
