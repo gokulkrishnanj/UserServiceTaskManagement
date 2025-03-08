@@ -74,7 +74,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         if (isExpired) {
             String accessToken = "Bearer " + jwtService.generateToken(userDetails);
             refreshToken = "Bearer " + jwtService.generateRefreshToken(userDetails);
-            logInDetailsDTO.setRefreshToken("Bearer " + refreshToken);
+            logInDetailsDTO.setRefreshToken(refreshToken);
             logInDetailsDTO.setAccessToken(accessToken);
             logInDetailsDTO.setMessage("new token generated");
             return logInDetailsDTO;
