@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public interface UserDetailAPI {
 
     @PostMapping(value = "/register/user")
-    public ResponseEntity<UserDetailsRegistrationDTO> registerUser(@RequestBody  UserDetail userDetail);
+    public ResponseEntity<UserDetailsRegistrationDTO> registerUser(@RequestBody UserDetail userDetail);
 
     @GetMapping(value = "/login/user")
     public ResponseEntity<LogInDetailsDTO> logInUser(@RequestBody UserDetail userDetail);

@@ -1,7 +1,6 @@
 package com.example.userServiceTaskManagement.Configuration;
 
 import com.example.userServiceTaskManagement.Entity.UserDetail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,13 +13,14 @@ import java.util.List;
 public class CustomUserDetail implements UserDetails {
 
     private final UserDetail userDetail;
-    public CustomUserDetail(UserDetail userDetail){
-        this.userDetail=userDetail;
+
+    public CustomUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+userDetail.getRole()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + userDetail.getRole()));
     }
 
     @Override

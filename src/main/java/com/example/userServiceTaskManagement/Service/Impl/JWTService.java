@@ -1,6 +1,5 @@
 package com.example.userServiceTaskManagement.Service.Impl;
 
-import com.example.userServiceTaskManagement.Entity.UserDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -22,7 +21,7 @@ public class JWTService {
     Map<String, Object> claims = new HashMap<>();
 
     public String generateToken(UserDetails userDetails) {
-        System.out.println("vd:"+userDetails.getAuthorities());
+        System.out.println("vd:" + userDetails.getAuthorities());
         claims.put("roles", Arrays.asList(userDetails.getAuthorities()));
         return
                 Jwts
@@ -48,7 +47,6 @@ public class JWTService {
                         .signWith(generateSecretKey())
                         .compact();
     }
-
 
 
     private final SecretKey generateSecretKey() {
@@ -81,17 +79,6 @@ public class JWTService {
             throw e; // Re-throw for debugging
         }
     }
-
-
-//    public Claims extractClaims(String token) {
-//        return
-//                Jwts
-//                        .parserBuilder()
-//                        .setSigningKey(secretKey)
-//                        .build()
-//                        .parseClaimsJws(token)
-//                        .getBody();
-//    }
 
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         final String userName = extractUserNameFromToken(jwtToken);

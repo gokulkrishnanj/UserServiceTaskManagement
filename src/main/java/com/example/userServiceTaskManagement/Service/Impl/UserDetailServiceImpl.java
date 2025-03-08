@@ -35,13 +35,12 @@ public class UserDetailServiceImpl implements UserDetailService {
     private JWTService jwtService;
 
     @Override
-    public UserDetailsRegistrationDTO registerUser(UserDetail userDetail){
+    public UserDetailsRegistrationDTO registerUser(UserDetail userDetail) {
         UserDetailsRegistrationDTO userDetailsRegistrationDTO = new UserDetailsRegistrationDTO();
         UserDetail userDetails = userDetailRepository.findByUserMailId(userDetail.getUserMailId());
-        if(!Objects.isNull(userDetails)){
+        if (!Objects.isNull(userDetails)) {
             userDetailsRegistrationDTO.setMessage("Already registered user");
-        }
-        else{
+        } else {
             userDetail.setPassword(bCryptPasswordEncoder.encode(userDetail.getPassword()));
             userDetailRepository.save(userDetail);
             userDetailsRegistrationDTO.setMessage("user registered");
@@ -49,13 +48,13 @@ public class UserDetailServiceImpl implements UserDetailService {
         return userDetailsRegistrationDTO;
     }
 
-    public LogInDetailsDTO logInUser(UserDetail userDetail){
+    public LogInDetailsDTO logInUser(UserDetail userDetail) {
         LogInDetailsDTO logInDetailsDTO = new LogInDetailsDTO();
-        Authentication authenticate= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetail.getUserMailId(),userDetail.getPassword()));
-        if(authenticate.isAuthenticated()){
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetail.getUserMailId(), userDetail.getPassword()));
+        if (authenticate.isAuthenticated()) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userDetail.getUserMailId());
-            String accessToken = "Bearer "+jwtService.generateToken(userDetails);
-            String refreshToken = "Bearer "+jwtService.generateRefreshToken(userDetails);
+            String accessToken = "Bearer " + jwtService.generateToken(userDetails);
+            String refreshToken = "Bearer " + jwtService.generateRefreshToken(userDetails);
             logInDetailsDTO.setAccessToken(accessToken);
             logInDetailsDTO.setRefreshToken(refreshToken);
             logInDetailsDTO.setMessage("Login Successful");
@@ -66,15 +65,16 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     @Override
-    public LogInDetailsDTO refreshNewToken(String refreshToken){
+    public LogInDetailsDTO refreshNewToken(String refreshToken) {
         LogInDetailsDTO logInDetailsDTO = new LogInDetailsDTO();
-        System.out.println("refToken:"+refreshToken);
+        System.out.println("refToken:" + refreshToken);
         String userName = jwtService.extractUserNameFromToken(refreshToken.substring(7).trim());
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-        boolean isExpired = jwtService.isTokenValid(refreshToken.substring(7).trim(),userDetails);
-        if(isExpired){
-            String accessToken = "Bearer "+jwtService.generateToken(userDetails);
-            logInDetailsDTO.setRefreshToken("Bearer "+refreshToken);
+        boolean isExpired = jwtService.isTokenValid(refreshToken.substring(7).trim(), userDetails);
+        if (isExpired) {
+            String accessToken = "Bearer " + jwtService.generateToken(userDetails);
+            refreshToken = "Bearer " + jwtService.generateRefreshToken(userDetails);
+            logInDetailsDTO.setRefreshToken("Bearer " + refreshToken);
             logInDetailsDTO.setAccessToken(accessToken);
             logInDetailsDTO.setMessage("new token generated");
             return logInDetailsDTO;
