@@ -2,7 +2,9 @@ package com.example.userServiceTaskManagement.Service.Impl;
 
 import com.example.userServiceTaskManagement.DTO.LogInDetailsDTO;
 import com.example.userServiceTaskManagement.DTO.UserDetailsRegistrationDTO;
+import com.example.userServiceTaskManagement.Entity.Student;
 import com.example.userServiceTaskManagement.Entity.UserDetail;
+import com.example.userServiceTaskManagement.Repository.StudentRepository;
 import com.example.userServiceTaskManagement.Repository.UserDetailRepository;
 import com.example.userServiceTaskManagement.Service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     @Override
     public UserDetailsRegistrationDTO registerUser(UserDetail userDetail) {
         UserDetailsRegistrationDTO userDetailsRegistrationDTO = new UserDetailsRegistrationDTO();
@@ -43,6 +48,11 @@ public class UserDetailServiceImpl implements UserDetailService {
         } else {
             userDetail.setPassword(bCryptPasswordEncoder.encode(userDetail.getPassword()));
             userDetailRepository.save(userDetail);
+            if(userDetail.getRole().equals("STUDENT")){
+                Student student = new Student();
+                student.setUserDetail(userDetail);
+                studentRepository.save(student);
+            }
             userDetailsRegistrationDTO.setMessage("user registered");
         }
         return userDetailsRegistrationDTO;
