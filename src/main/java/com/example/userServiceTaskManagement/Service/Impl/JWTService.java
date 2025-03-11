@@ -1,7 +1,6 @@
 package com.example.userServiceTaskManagement.Service.Impl;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,7 +64,6 @@ public class JWTService {
 
     public Claims extractClaims(String token) {
         try {
-            System.out.println("Received Token: [" + token + "]"); // Debug log
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
@@ -89,5 +87,9 @@ public class JWTService {
     private boolean isExpired(String token) {
         Date date = extractUserNameFromToken(token, Claims::getExpiration);
         return date.before(new Date());
+    }
+
+    public String getUserNameFromToken(String token){
+        return extractUserNameFromToken(token);
     }
 }

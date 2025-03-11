@@ -7,6 +7,7 @@ import com.example.userServiceTaskManagement.Entity.UserDetail;
 import com.example.userServiceTaskManagement.Repository.StudentRepository;
 import com.example.userServiceTaskManagement.Repository.UserDetailRepository;
 import com.example.userServiceTaskManagement.Service.UserDetailService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class UserDetailServiceImpl implements UserDetailService {
 
@@ -62,6 +64,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         LogInDetailsDTO logInDetailsDTO = new LogInDetailsDTO();
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetail.getUserMailId(), userDetail.getPassword()));
         if (authenticate.isAuthenticated()) {
+            log.info("auth user-------");
             UserDetails userDetails = userDetailsService.loadUserByUsername(userDetail.getUserMailId());
             String accessToken = "Bearer " + jwtService.generateToken(userDetails);
             String refreshToken = "Bearer " + jwtService.generateRefreshToken(userDetails);
@@ -70,7 +73,6 @@ public class UserDetailServiceImpl implements UserDetailService {
             logInDetailsDTO.setMessage("Login Successful");
             return logInDetailsDTO;
         }
-        logInDetailsDTO.setMessage("User not found");
         return logInDetailsDTO;
     }
 

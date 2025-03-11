@@ -1,5 +1,7 @@
 package com.example.userServiceTaskManagement.Configuration;
 
+import com.example.userServiceTaskManagement.Exceptions.CustomAccessDeniedExceptionHandler;
+import com.example.userServiceTaskManagement.Exceptions.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,12 @@ public class HttpSecurityConfig {
     @Autowired
     private JWTFilter jwtFilter;
 
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthneticationEntryPoint;
+
+    @Autowired
+    private CustomAccessDeniedExceptionHandler customAccessDeniedExceptionHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -44,6 +52,7 @@ public class HttpSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(customAccessDeniedExceptionHandler).authenticationEntryPoint(customAuthneticationEntryPoint))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
