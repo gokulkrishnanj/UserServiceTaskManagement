@@ -16,8 +16,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>> hadleInvalidArgumentException(MethodArgumentNotValidException exception){
-        Map<String ,String> errorMap = new HashMap<>();
-        exception.getBindingResult().getFieldErrors().forEach(fieldError -> errorMap.put(fieldError.getField(), fieldError.getDefaultMessage()));
-        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        Map<String ,String> errorResponse = new HashMap<>();
+        exception.getBindingResult().getFieldErrors().forEach(fieldError -> errorResponse.put(fieldError.getField(), fieldError.getDefaultMessage()));
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TasksNotFoundException.class)
+    public ResponseEntity<Map<String,String>> handleTaskNotFoundException(TasksNotFoundException tasksNotFoundException){
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", tasksNotFoundException.getMessage());
+        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

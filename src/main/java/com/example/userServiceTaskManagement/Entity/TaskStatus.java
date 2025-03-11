@@ -19,4 +19,6 @@ public class TaskStatus {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusName statusName;
+
+    private Integer rank;
 }
