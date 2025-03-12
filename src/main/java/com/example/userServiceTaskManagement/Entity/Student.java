@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 @Entity(name = "student")
 @Data
@@ -17,7 +16,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String studentId;
 
-    @JoinColumn(name = "userId",nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     @OneToOne
     private UserDetail userDetail;
 }

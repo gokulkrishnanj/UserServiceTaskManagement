@@ -44,11 +44,13 @@ public class HttpSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        List<String> whiteListAPIs = List.of("/**/register/**","/**/login/**", "/**/Login/**", "**/Register/**", "/**/refresh**");
+        List<String> whiteListAPIs = List.of("/**/register/**", "/**/login/**", "/**/Login/**", "**/Register/**", "/**/refresh**");
 
         httpSecurity
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {whiteListAPIs.forEach(api-> authorizationManagerRequestMatcherRegistry.requestMatchers(new AntPathRequestMatcher(api)).permitAll());
-                authorizationManagerRequestMatcherRegistry.requestMatchers(request -> request.getRequestURI().contains("/student")).hasRole("STUDENT").requestMatchers(request -> request.getRequestURI().contains("teacher")).hasRole("TEACHER").anyRequest().authenticated();})
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+                    whiteListAPIs.forEach(api -> authorizationManagerRequestMatcherRegistry.requestMatchers(new AntPathRequestMatcher(api)).permitAll());
+                    authorizationManagerRequestMatcherRegistry.requestMatchers(request -> request.getRequestURI().contains("/student")).hasRole("STUDENT").requestMatchers(request -> request.getRequestURI().contains("teacher")).hasRole("TEACHER").anyRequest().authenticated();
+                })
                 .httpBasic(Customizer.withDefaults())
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -58,7 +60,7 @@ public class HttpSecurityConfig {
     }
 
     // loading from inmemory
-    public UserDetailsService userDetailsService() throws Exception{
+    public UserDetailsService userDetailsService() throws Exception {
         UserDetails user = User
                 .withUsername("user")
                 .password("{noop}user")
@@ -69,11 +71,11 @@ public class HttpSecurityConfig {
                 .password("{noop}user1")
                 .roles("STUDENT")
                 .build();
-        return new InMemoryUserDetailsManager(user,user1);
+        return new InMemoryUserDetailsManager(user, user1);
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
@@ -81,7 +83,7 @@ public class HttpSecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(16);
     }
 

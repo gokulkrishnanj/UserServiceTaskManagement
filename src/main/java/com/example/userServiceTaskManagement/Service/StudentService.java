@@ -14,7 +14,7 @@ public interface StudentService {
 
     public TaskResponseDTO deleteTask(String taskName, String subjectName);
 
-    public List<TaskResponseDTO> getAllTasks(Integer itemsPerPage,Integer pageNumber);
+    public List<TaskResponseDTO> getAllTasks(Integer itemsPerPage, Integer pageNumber);
 
     public ViewTaskResponseDTO viewTaskWithFilter(Integer itemsPerPage, Integer pageNumber, String status, String taskName);
 }

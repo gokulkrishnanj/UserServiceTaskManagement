@@ -18,8 +18,8 @@ public class CustomAccessDeniedExceptionHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        Map<String,String> errorResponse = new HashMap<>();
-        errorResponse.put("error","forbidden");
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "forbidden");
         errorResponse.put("message", accessDeniedException.getMessage());
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskRepository extends JpaRepository<Task,String> {
+public interface TaskRepository extends JpaRepository<Task, String> {
     Optional<Task> findByTaskNameContainingIgnoreCaseAndStudentStudentIdAndSubjectSubjectNameContainingIgnoreCase(String taskName, String studentId, String subject);
 
     Page<Task> findByStudentStudentId(String studentId, Pageable pageable);

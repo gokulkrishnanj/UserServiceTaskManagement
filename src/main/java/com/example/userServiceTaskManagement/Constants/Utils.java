@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Utils {
-    public String getUserNameFromToken(){
+    public String getUserNameFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }

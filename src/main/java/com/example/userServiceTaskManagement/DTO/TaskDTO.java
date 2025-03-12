@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 @NoArgsConstructor
 public class TaskDTO {
 
-    @Size(min = 1,max=20, message = "Only minimum of 1 and maximum of 20 characters are allowed")
+    @Size(min = 1, max = 20, message = "Only minimum of 1 and maximum of 20 characters are allowed")
     private String taskName;
 
-    @Size(min = 1, max = 200,message = "Only minimum of 1 and maximum of 200 characters are allowed")
+    @Size(min = 1, max = 200, message = "Only minimum of 1 and maximum of 200 characters are allowed")
     private String taskDescription;
 
     private String subject;

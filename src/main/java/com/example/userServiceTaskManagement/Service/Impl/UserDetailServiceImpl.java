@@ -50,7 +50,7 @@ public class UserDetailServiceImpl implements UserDetailService {
         } else {
             userDetail.setPassword(bCryptPasswordEncoder.encode(userDetail.getPassword()));
             userDetailRepository.save(userDetail);
-            if(userDetail.getRole().equals("STUDENT")){
+            if (userDetail.getRole().equals("STUDENT")) {
                 Student student = new Student();
                 student.setUserDetail(userDetail);
                 studentRepository.save(student);

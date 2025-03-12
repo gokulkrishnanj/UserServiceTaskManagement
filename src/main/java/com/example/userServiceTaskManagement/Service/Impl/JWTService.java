@@ -89,7 +89,7 @@ public class JWTService {
         return date.before(new Date());
     }
 
-    public String getUserNameFromToken(String token){
+    public String getUserNameFromToken(String token) {
         return extractUserNameFromToken(token);
     }
 }
