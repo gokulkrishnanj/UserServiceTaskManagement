@@ -3,6 +3,7 @@ package com.example.userServiceTaskManagement.Exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,5 +27,12 @@ public class GlobalExceptionHandler {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("message", tasksNotFoundException.getMessage());
         return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Map<String, String>> nullPointerException(NullPointerException nullPointerException){
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", nullPointerException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatusCode.valueOf(500));
     }
 }
